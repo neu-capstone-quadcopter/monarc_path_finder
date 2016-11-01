@@ -131,6 +131,9 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(monarc_path_finder_node src/monarc_path_finder_node.cpp)
+target_sources(monarc_path_finder_node PUBLIC
+  src/autopilot.cpp
+)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
