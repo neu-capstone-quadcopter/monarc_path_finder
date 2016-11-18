@@ -6,12 +6,12 @@ Autopilot::Autopilot()
   // Private NodeHandle for parameters:
   ros::NodeHandle nh_private("~");
   nh_private.param("loop_frequency", param_loop_frequency_, 10.0);
-
+ 
   // Resolve channels.
-  std::string octomap_channel = nh_.resolveName("/octomap_binary");
+  std::string task_channel = nh_.resolveName("/tasks");
 
   // Subscribe to all topics.
-  octomap_sub_ = nh_.subscribe("/octomap_binary", 5, &Autopilot::octomapCallback, this);
+  task_sub_ = nh_.subscribe(task_channel, 20, &Autopilot::taskCallback, this);
 }
 
 void Autopilot::run() {
@@ -27,24 +27,22 @@ void Autopilot::run() {
   }
 }
 
-void Autopilot::octomapCallback(const octomap_msgs::OctomapConstPtr& mapMsg) {
-  octomap::AbstractOcTree* abstract_tree = octomap_msgs::binaryMsgToMap(*mapMsg);
-  octomap::OcTree* new_map = dynamic_cast<octomap::OcTree*>(abstract_tree);
-  if (new_map) {
-    std::lock_guard<std::mutex> guard(map_mu_);
-    map_.reset(new_map);
-  }
+void Autopilot::loopOnce() { 
+  task_controller_->loop();  
 }
 
-void Autopilot::loopOnce() {
-  std::lock_guard<std::mutex> guard(map_mu_);
-  if (!map_) {
-    ROS_WARN("OctoMap not loaded yet");
-    return;
+void Autopilot::taskCallback(const std_msgs::Int32ConstPtr& task) {
+  std::unique_ptr<Task> new_task;
+  switch (task->data) {
+    case 1:
+      new_task = std::make_unique<TakeoffTask>(drone_controller_);
+      break;
+    case 2:
+      new_task = std::make_unique<NavigateTask>(drone_controller_);
+      break;
+    default:
+      ROS_INFO("Unknown message number: %d", task->data);
+      return;
   }
-
-  for (auto it = map_->begin_leafs(), end = map_->end_leafs(); it != end; ++it) {
-    std::cout << "Node center: " << it.getCoordinate();
-    std::cout << " Value: " << it->getValue() << "\n";
-  }
+  task_controller_->addTask(std::move(new_task));
 }

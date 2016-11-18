@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(monarc_path_finder)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -117,9 +117,9 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 include_directories(
-  include
+  src
+  src/task
   ${catkin_INCLUDE_DIRS}
   ${OCTOMAP_INCLUDE_DIRS}
 )
@@ -136,8 +136,12 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(monarc_path_finder_node src/monarc_path_finder_node.cpp)
+file(GLOB monarc_path_finder_SRC
+  src/*.cpp
+  src/task/*.cpp
+)
 target_sources(monarc_path_finder_node PUBLIC
-  src/autopilot.cpp
+  ${monarc_path_finder_SRC}
 )
 
 ## Add cmake target dependencies of the executable
