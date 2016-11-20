@@ -26,7 +26,7 @@ class Autopilot {
   double param_loop_frequency_;
  
   // subscriptions
-  ros::Subscriber task_sub_;
+  ros::Subscriber command_sub_;
   ros::Subscriber gps_sub_;
 
   // task controller
@@ -41,7 +41,7 @@ public:
 private:
   void loopOnce();
 
-  void taskCallback(const std_msgs::Int32ConstPtr& task);  
+  void commandCallback(const monarc_uart_driver::NavCommandConstPtr& task);  
   void gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& navSatFix);
 };
 

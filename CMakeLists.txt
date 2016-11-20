@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   octomap_msgs
   std_srvs
+  monarc_uart_driver
 )
 
 ## System dependencies are found with CMake's conventions
