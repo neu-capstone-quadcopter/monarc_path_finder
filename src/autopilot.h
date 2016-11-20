@@ -8,7 +8,6 @@
 #include "ros/ros.h"
 #include "std_msgs/Int32.h"
 #include "sensor_msgs/NavSatFix.h"
-#include "sensor_msgs/NavSatStatus.h"
 #include "monarc_uart_driver/NavCommand.h"
 
 #include "task_controller.h"
@@ -41,8 +40,8 @@ public:
 private:
   void loopOnce();
 
-  void commandCallback(const monarc_uart_driver::NavCommandConstPtr& task);  
-  void gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& navSatFix);
+  void commandCallback(const monarc_uart_driver::NavCommandConstPtr&);
+  void gpsCallback(const sensor_msgs::NavSatFix::ConstPtr&);
 };
 
 #endif // AUTOPILOT_H_

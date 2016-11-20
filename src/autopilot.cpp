@@ -49,6 +49,6 @@ void Autopilot::commandCallback(const monarc_uart_driver::NavCommandConstPtr& co
   task_controller_->addTask(std::move(new_task));
 }
 
-void Autopilot::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& navSatFix) {
-
+void Autopilot::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& location) {
+  task_controller_->setLocation(location);
 }

@@ -38,3 +38,18 @@ void TaskController::loop() {
     }
   }
 }
+
+void TaskController::setLocation(const sensor_msgs::NavSatFix::ConstPtr& location) {
+  switch (location->status.status) {
+    case sensor_msgs::NavSatStatus::STATUS_NO_FIX:
+      // TODO(nvanbenschoten) Remove location after some time.
+      break;
+    case sensor_msgs::NavSatStatus::STATUS_FIX:
+    case sensor_msgs::NavSatStatus::STATUS_SBAS_FIX:
+    case sensor_msgs::NavSatStatus::STATUS_GBAS_FIX:
+      cur_location_ = location;
+      break;
+    default:
+      throw std::invalid_argument("unexpected NavSatStatus value");
+  }
+}
