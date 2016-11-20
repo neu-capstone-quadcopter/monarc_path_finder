@@ -2,8 +2,14 @@
 #define TASK_H_
 
 #include <memory>
+#include <stdexcept>
 
 #include "ros/ros.h"
+#include "actionlib/client/simple_action_client.h"
+#include "actionlib/client/terminal_state.h"
+
+#include "monarc_tf/FlyAction.h"
+#include "monarc_tf/FlyGoal.h"
 
 #include "drone_controller.h"
 
@@ -16,11 +22,17 @@ class Task {
 protected:
   ros::NodeHandle nh_; 
 
+  actionlib::SimpleActionClient<monarc_tf::FlyAction> ac_;
+
   std::shared_ptr<DroneController> drone_controller_;
+
+  void waitForActionServer();
+  bool isActionComplete(actionlib::SimpleClientGoalState);
 
 public:
   Task(std::shared_ptr<DroneController> drone_controller) :
-    drone_controller_(drone_controller) {};
+    drone_controller_(drone_controller),
+    ac_("fly", true) {};
   virtual ~Task() = default;
 
   virtual bool  isRunnable(State) = 0;

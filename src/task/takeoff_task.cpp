@@ -2,9 +2,18 @@
 
 TakeoffTask::TakeoffTask(std::shared_ptr<DroneController> drone_controller)
   : Task(drone_controller) {
-  
+
 }
 
-void TakeoffTask::run() {}
+void TakeoffTask::run() {
+  waitForActionServer();
 
-bool TakeoffTask::loopOnce() {}
+  monarc_tf::FlyGoal goal;
+  goal.command = monarc_tf::FlyGoal::TAKEOFF;
+
+  ac_.sendGoal(goal);
+}
+
+bool TakeoffTask::loopOnce() {
+  return isActionComplete(ac_.getState());
+}
