@@ -7,6 +7,9 @@
 
 #include "ros/ros.h"
 #include "std_msgs/Int32.h"
+#include "sensor_msgs/NavSatFix.h"
+#include "sensor_msgs/NavSatStatus.h"
+#include "monarc_uart_driver/NavCommand.h"
 
 #include "task_controller.h"
 #include "drone_controller.h"
@@ -24,6 +27,7 @@ class Autopilot {
  
   // subscriptions
   ros::Subscriber task_sub_;
+  ros::Subscriber gps_sub_;
 
   // task controller
   std::unique_ptr<TaskController> task_controller_;
@@ -38,6 +42,7 @@ private:
   void loopOnce();
 
   void taskCallback(const std_msgs::Int32ConstPtr& task);  
+  void gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& navSatFix);
 };
 
 #endif // AUTOPILOT_H_

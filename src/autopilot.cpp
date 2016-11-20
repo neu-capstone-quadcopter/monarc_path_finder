@@ -9,9 +9,11 @@ Autopilot::Autopilot()
  
   // Resolve channels.
   std::string task_channel = nh_.resolveName("/tasks");
+  std::string gps_channel = nh_.resolveName("/fix");
 
   // Subscribe to all topics.
   task_sub_ = nh_.subscribe(task_channel, 20, &Autopilot::taskCallback, this);
+  gps_sub_ = nh_.subscribe(gps_channel, 5, &Autopilot::gpsCallback, this);
 }
 
 void Autopilot::run() {
@@ -45,4 +47,8 @@ void Autopilot::taskCallback(const std_msgs::Int32ConstPtr& task) {
       return;
   }
   task_controller_->addTask(std::move(new_task));
+}
+
+void Autopilot::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& navSatFix) {
+
 }
