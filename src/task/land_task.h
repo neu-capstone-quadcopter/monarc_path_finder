@@ -1,18 +1,14 @@
 #ifndef LAND_TASK_H_
 #define LAND_TASK_H_
 
-#include "task.h"
+#include "basic_task.h"
 
-class LandTask : public Task {
+class LandTask : public BasicTask {
 public:
-  LandTask();  
-
   inline bool  isRunnable(State cur_state) { return cur_state == State::InAir; };
   inline bool  isPreemptible() { return false; };
   inline State finishState() { return State::Grounded; };
-
-  void run();
-  bool loopOnce();
+  inline int   goal() { return monarc_tf::FlyGoal::LAND; };
 };
 
 #endif // LAND_TASK_H_
