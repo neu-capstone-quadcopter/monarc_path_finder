@@ -1,7 +1,9 @@
 #include "autopilot.h"
 
 Autopilot::Autopilot()
-  : nh_(NODE_NAME) {
+  : nh_(NODE_NAME),
+    task_controller_(std::make_unique<TaskController>()),
+    watchdog_(nh_) {
 
   // Private NodeHandle for parameters:
   ros::NodeHandle nh_private("~");
@@ -37,16 +39,19 @@ void Autopilot::commandCallback(const monarc_uart_driver::NavCommandConstPtr& co
   std::unique_ptr<Task> new_task;
   switch (command->command_number) {
     case monarc_uart_driver::NavCommand::TAKEOFF:
-      new_task = std::make_unique<TakeoffTask>(drone_controller_);
+      new_task = std::make_unique<TakeoffTask>();
+      break;
+    case monarc_uart_driver::NavCommand::LAND:
+      new_task = std::make_unique<LandTask>();
       break;
     case monarc_uart_driver::NavCommand::NAVIGATE_TO_GOAL:
-      new_task = std::make_unique<NavigateTask>(drone_controller_);
+      new_task = std::make_unique<NavigateTask>();
       break;
     default:
       ROS_INFO("Unhandled command type: %d", command->command_number);
       return;
   }
-  task_controller_->addTask(std::move(new_task));
+  task_controller_->replaceTask(std::move(new_task));
 }
 
 void Autopilot::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& location) {

@@ -18,7 +18,7 @@ class NavigateTask : public Task {
   std::unique_ptr<octomap::OcTree> map_;
 
 public:
-  NavigateTask(std::shared_ptr<DroneController> drone_controller);  
+  NavigateTask();
 
   inline bool  isRunnable(State cur_state) { return cur_state == State::InAir; };
   inline bool  isPreemptible() { return true; };

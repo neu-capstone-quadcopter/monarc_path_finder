@@ -1,7 +1,6 @@
 #include "navigate_task.h"
 
-NavigateTask::NavigateTask(std::shared_ptr<DroneController> drone_controller) 
-  : Task(drone_controller) { 
+NavigateTask::NavigateTask() {
   // Resolve channels.
   std::string octomap_channel = nh_.resolveName("/octomap_binary");
 
@@ -9,7 +8,9 @@ NavigateTask::NavigateTask(std::shared_ptr<DroneController> drone_controller)
   octomap_sub_ = nh_.subscribe(octomap_channel, 3, &NavigateTask::octomapCallback, this);
 }
 
-void NavigateTask::run() {}
+void NavigateTask::run() {
+  running = true;
+}
 
 bool NavigateTask::loopOnce() {}
 

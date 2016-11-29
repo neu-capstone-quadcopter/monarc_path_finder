@@ -1,19 +1,19 @@
-#include "takeoff_task.h"
+#include "hover_task.h"
 
-TakeoffTask::TakeoffTask() {
+HoverTask::HoverTask() {
 
 }
 
-void TakeoffTask::run() {
+void HoverTask::run() {
   waitForActionServer();
 
   monarc_tf::FlyGoal goal;
-  goal.command = monarc_tf::FlyGoal::TAKEOFF;
+  goal.command = monarc_tf::FlyGoal::HOVER;
 
   ac_.sendGoal(goal, boost::bind(&Task::onActionDone, this, _1, _2));
   running = true;
 }
 
-bool TakeoffTask::loopOnce() {
+bool HoverTask::loopOnce() {
   return complete;
 }

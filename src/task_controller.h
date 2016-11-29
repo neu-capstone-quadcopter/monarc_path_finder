@@ -10,20 +10,17 @@
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/NavSatStatus.h"
 
-#include "drone_controller.h"
 #include "task/task.h"
+#include "task/hover_task.h"
 
 class TaskController {
-  std::shared_ptr<DroneController> drone_controller_;
-
   State cur_state_;
   sensor_msgs::NavSatFixConstPtr cur_location_;
 
   std::deque<std::unique_ptr<Task>> task_queue_;
 
 public:
-  TaskController(std::shared_ptr<DroneController> drone_controller) : 
-    drone_controller_(drone_controller),
+  TaskController() :
     cur_state_(State::Grounded) {};
 
   bool hasTask() { return task_queue_.size() > 0; };

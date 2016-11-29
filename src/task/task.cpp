@@ -1,9 +1,7 @@
 #include "task.h"
 
 void Task::waitForActionServer() {
-  ROS_INFO("Waiting for action server to start.");
   ac_.waitForServer();
-  ROS_INFO("Action service connected.");
 }
 
 bool Task::isActionComplete(actionlib::SimpleClientGoalState state) {

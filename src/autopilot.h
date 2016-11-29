@@ -11,10 +11,11 @@
 #include "monarc_uart_driver/NavCommand.h"
 
 #include "task_controller.h"
-#include "drone_controller.h"
 #include "task/task.h"
+#include "task/land_task.h"
 #include "task/takeoff_task.h"
 #include "task/navigate_task.h"
+#include "watchdog.h"
 
 #define NODE_NAME "monarc_path_finder_node"
 
@@ -31,8 +32,8 @@ class Autopilot {
   // task controller
   std::unique_ptr<TaskController> task_controller_;
 
-  // drone controller
-  std::shared_ptr<DroneController> drone_controller_;
+  // watchdog
+  Watchdog watchdog_;
 public:
   Autopilot();
 
