@@ -7,15 +7,11 @@
 #include <stdexcept>
 #include <utility>
 
-#include "sensor_msgs/NavSatFix.h"
-#include "sensor_msgs/NavSatStatus.h"
-
 #include "task/task.h"
 #include "task/hover_task.h"
 
 class TaskController {
   State cur_state_;
-  sensor_msgs::NavSatFixConstPtr cur_location_;
 
   std::deque<std::unique_ptr<Task>> task_queue_;
 
@@ -27,8 +23,6 @@ public:
 
   void addTask(std::unique_ptr<Task>);
   void replaceTask(std::unique_ptr<Task>);
-
-  void setLocation(const sensor_msgs::NavSatFix::ConstPtr&);
 
   void loop();
 private:

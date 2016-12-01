@@ -11,11 +11,9 @@ Autopilot::Autopilot()
  
   // Resolve channels.
   std::string command_channel = nh_.resolveName("/nav_command");
-  std::string gps_channel = nh_.resolveName("/fix");
 
   // Subscribe to all topics.
   command_sub_ = nh_.subscribe(command_channel, 20, &Autopilot::commandCallback, this);
-  gps_sub_ = nh_.subscribe(gps_channel, 5, &Autopilot::gpsCallback, this);
 }
 
 void Autopilot::run() {
@@ -45,7 +43,7 @@ void Autopilot::commandCallback(const monarc_uart_driver::NavCommandConstPtr& co
       new_task = std::make_unique<LandTask>();
       break;
     case monarc_uart_driver::NavCommand::NAVIGATE_TO_GOAL:
-      new_task = std::make_unique<NavigateTask>();
+      new_task = std::make_unique<NavigateTask>(command->command_location);
       break;
     default:
       ROS_INFO("Unhandled command type: %d", command->command_number);
@@ -54,6 +52,3 @@ void Autopilot::commandCallback(const monarc_uart_driver::NavCommandConstPtr& co
   task_controller_->replaceTask(std::move(new_task));
 }
 
-void Autopilot::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& location) {
-  task_controller_->setLocation(location);
-}

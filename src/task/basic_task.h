@@ -17,9 +17,7 @@ public:
     running = true;
   }
 
-  bool loopOnce() {
-    return complete;
-  }
+  bool loopOnce() { return complete; };
 };
 
 #endif // BASIC_TASK_H_

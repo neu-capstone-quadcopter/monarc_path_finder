@@ -8,6 +8,8 @@ set(CMAKE_CXX_FLAGS "-std=c++14 ${CMAKE_CXX_FLAGS}")
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  std_msgs
+  sensor_msgs
   octomap_msgs
   std_srvs
   actionlib_msgs

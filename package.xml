@@ -30,6 +30,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
   <build_depend>octomap</build_depend>
   <build_depend>octomap_msgs</build_depend>
   <build_depend>std_srvs</build_depend>
@@ -39,6 +41,8 @@
   <build_depend>monarc_tf</build_depend>
 
   <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
   <run_depend>octomap</run_depend>
   <run_depend>octomap_msgs</run_depend>
   <run_depend>std_srvs</run_depend>
