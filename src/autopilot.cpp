@@ -14,6 +14,12 @@ Autopilot::Autopilot()
 
   // Subscribe to all topics.
   command_sub_ = nh_.subscribe(command_channel, 20, &Autopilot::commandCallback, this);
+
+  // Resolve channels.
+  std::string octomap_channel = nh_.resolveName("/octomap_binary");
+
+  // Subscribe to all topics.
+  octomap_sub_ = nh_.subscribe(octomap_channel, 3, &Autopilot::octomapCallback, this);
 }
 
 void Autopilot::run() {
